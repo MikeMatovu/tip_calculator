@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+    <h1 class="dashboard-title">TIP CALCULATIONS</h1>
+    <div class="table-container">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Bill Amount</th>
+                    <th>Tip %</th>
+                    <th>Tip Amount</th>
+                    <th>Total Bill</th>
+                    <th>People</th>
+                    <th>Per Person</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @tips.each do |tip| %>
+                <tr>
+                    <td><%= number_to_currency(tip.bill) %></td>
+                    <td><%= tip.tip_percentage %> %</td>
+                    <td><%= number_to_currency(tip.tip_amount) %></td>
+                    <td><%= number_to_currency(tip.total) %></td>
+                    <td><%= tip.number_of_people %></td>
+                    <td><%= number_to_currency(tip.per_person_amount) %></td>
+                    <td><%= tip.created_at.strftime("%B %d, %Y %H:%M") %></td>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>

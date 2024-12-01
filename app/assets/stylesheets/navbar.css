@@ -1,0 +1,53 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  padding: 10px 20px;
+  color: white;
+  width: 100%;
+  position: fixed; /* Fix the navbar at the top */
+  top: 0; /* Position it at the top */
+  left: 0; /* Ensure it spans the full width */
+  z-index: 1000; /* Ensure it is above other content */
+   height: 60px; /* Set a consistent height */
+}
+
+.navbar-left, .navbar-right {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-title {
+  margin: 0;
+}
+
+
+.navbar-button {
+  color: #00474b;;
+  text-decoration: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+}
+.home-button {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  
+ .navbar {
+  background-color: #00474b;
+ }
+
+  .navbar-button {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    color: white;
+  }
+}

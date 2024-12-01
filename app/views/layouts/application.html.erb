@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title><%= content_for(:title) || "Tip Calculator" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,9 +21,23 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-  </head>
 
-  <body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+</head>
+
+
+<body>
+    <header class="navbar">
+        <div class="navbar-right">
+            <%= link_to "SPLITTER", root_path, class: "navbar-button" %>
+        </div>
+        <div class="navbar-left">
+            <%= link_to "DASHBOARD", admin_dashboard_path, class: "navbar-button" %>
+        </div>
+    </header>
     <%= yield %>
-  </body>
+</body>
+
 </html>
