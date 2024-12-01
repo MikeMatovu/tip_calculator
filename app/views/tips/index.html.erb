@@ -6,64 +6,11 @@
 
 <div class="calculator">
     <div class="right">
-        <%= form_with url: tips_path, method: :post, id: "tip-form", local: false do |form| %>
-        <div>
-            <div class="item-label">
-                <%= form.label :bill, "Bill ($)" %>
-                <span class="error-message" id="bill-error"><%= @tip.errors[:bill].first if @tip.errors[:bill].any? %></span>
-            </div>
-            <div class="input-container">
-                <%= image_tag 'icon-dollar.svg', class: 'input-icon' %>
-                <%= form.number_field :bill, step: 0.01, id: "bill", required: true, class: "custom-input" %>
-            </div>
-        </div>
-        <div>
-            <div class="item-label">
-                <label>Select Tip %</label>
-                <span class="error-message" id="tip-error"><%= @tip.errors[:tip_percentage].first if @tip.errors[:tip_percentage].any? %></span>
-            </div>
-            <div class="tip-btn-container">
-                <% [5, 10, 15, 25, 50].each do |percent| %>
-                <button type="button" class="tip-btn" data-value="<%= percent %>"><%= percent %>%</button>
-                <% end %>
-                <input type="number" class="tip-btn custom-tip-input" placeholder="Custom" id="custom-tip" min="0" step="0.01">
-            </div>
-        </div>
-        <div>
-            <div class="item-label">
-                <%= form.label :number_of_people, "Number of People" %>
-                <span class="error-message" id="people-error"><%= @tip.errors[:number_of_people].first if @tip.errors[:number_of_people].any? %></span>
-            </div>
-            <div class="input-container">
-                <%= image_tag 'icon-person.svg', class: 'input-icon' %>
-                <%= form.number_field :number_of_people, id: "number_of_people", required: true, class: "custom-input" %>
-            </div>
-            <%= form.hidden_field :tip, id: "tip" %>
-        </div>
+        <%= form_with model: @tip, id: "tip-form", local: false do |form| %>
+        <%= render partial: "form_fields", locals: { form: form, tip_percentages: @tip_percentages, tip: @tip } %>
+        <%= form.hidden_field :tip, id: "tip" %>
     </div>
-
-    <div class="left">
-        <div class="info-div">
-            <div class="info-text">
-                <label>Tip Amount</label>
-                <span class="person-text">/ Person</span>
-            </div>
-            <div class="total-container">
-                <span class="dollar-sign">$</span>
-                <span id="tip-amount" class="main-numbers">0.00</span>
-            </div>
-        </div>
-        <div class="info-div">
-            <div class="info-text">
-                <label>Total</label>
-                <span class="person-text">/ Person</span>
-            </div>
-            <div class="total-container">
-                <span class="dollar-sign">$</span>
-                <span id="total" class="main-numbers">0.00</span>
-            </div>
-        </div>
-        <%= form.submit "CALCULATE", id: "calculate-button", class: "calculate-button" %>
-    </div>
+    <%= render partial: "results_display", locals: { form: form } %>
     <% end %>
+
 </div>

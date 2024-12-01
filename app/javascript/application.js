@@ -1,87 +1,106 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails";
 
-
 document.addEventListener("DOMContentLoaded", () => {
-  const percentageButtons = document.querySelectorAll(".tip-btn");
-  const customTipInput = document.getElementById("custom-tip");
-  const tipInput = document.getElementById("tip");
-  const form = document.getElementById("tip-form");
-  const calculateButton = document.getElementById("calculate-button");
-  const tipAmountField = document.getElementById("tip-amount");
-  const totalField = document.getElementById("total");
+  const elements = {
+    percentageButtons: document.querySelectorAll(".tip-btn"),
+    customTipInput: document.getElementById("custom-tip"),
+    tipInput: document.getElementById("tip"),
+    form: document.getElementById("tip-form"),
+    calculateButton: document.getElementById("calculate-button"),
+    tipAmountField: document.getElementById("tip-amount"),
+    totalField: document.getElementById("total"),
+    bill: document.getElementById("bill"),
+    tipPercentage: document.getElementById("tip"),
+    numberOfPeople: document.getElementById("number_of_people"),
+    errors: {
+      bill: document.getElementById("bill-error"),
+      tip: document.getElementById("tip-error"),
+      numberOfPeople: document.getElementById("people-error"),
+    },
+  };
 
-  // Add event listener to percentage buttons
-  percentageButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      percentageButtons.forEach((btn) => btn.classList.remove("selected"));
-      button.classList.add("selected");
-      customTipInput.classList.remove("selected");
-      tipInput.value = button.dataset.value;
-    });
-  });
+  // Utility Functions
+  const clearErrors = () => {
+    Object.values(elements.errors).forEach(
+      (errorField) => (errorField.textContent = "")
+    );
+    [elements.bill, elements.tipPercentage, elements.numberOfPeople].forEach(
+      (field) => field.classList.remove("error")
+    );
+  };
 
-  customTipInput.addEventListener("input", () => {
-    percentageButtons.forEach((btn) => btn.classList.remove("selected"));
-    customTipInput.classList.add("selected");
+  const setError = (field, message) => {
+    elements.errors[field].textContent = message;
+    elements[field].classList.add("error");
+  };
 
-    tipInput.value = customTipInput.value;
-  });
-
-  // Handle form submission via Ajax
-  function handleFormSubmission(event) {
-    event.preventDefault();
-
-    // Clear previous error messages
-    document.getElementById("bill-error").textContent = "";
-    document.getElementById("tip-error").textContent = "";
-    document.getElementById("people-error").textContent = "";
-    document.getElementById("bill").classList.remove("error");
-    document.getElementById("tip").classList.remove("error");
-    document.getElementById("number_of_people").classList.remove("error");
-
-    //Validate form fields on the client side
+  const validateFields = () => {
     let isValid = true;
 
-    const bill = document.getElementById("bill").value;
-    const tipPercentage = document.getElementById("tip").value;
-    const numberOfPeople = document.getElementById("number_of_people").value;
+    const billValue = elements.bill.value;
+    const tipValue = elements.tipPercentage.value;
+    const peopleValue = elements.numberOfPeople.value;
 
-    if (!bill || bill <= 0) {
-      document.getElementById("bill-error").textContent = "! Can't be zero";
-      document.getElementById("bill").classList.add("error");
+    if (!billValue || billValue <= 0) {
+      setError("bill", "! Can't be zero");
       isValid = false;
     }
-    if (!tipPercentage || tipPercentage <= 0) {
-      document.getElementById("tip-error").textContent = "! Can't be zero";
-      document.getElementById("tip").classList.add("error");
+    if (!tipValue || tipValue <= 0) {
+      setError("tip", "! Can't be zero");
       isValid = false;
     }
-    if (!numberOfPeople || numberOfPeople <= 0) {
-      document.getElementById("people-error").textContent = "! Can't be zero";
-      document.getElementById("number_of_people").classList.add("error");
+    if (!peopleValue || peopleValue<= 0) {
+      setError("numberOfPeople", "! Can't be zero");
       isValid = false;
-    }
-    if (!isValid) {
-      return;
     }
 
-    calculateButton.value = "Calculating...";
-    calculateButton.disabled = true;
-    // Manually construct the FormData in the format Rails expects
-    const formData = new URLSearchParams();
-    formData.append("tip[bill]", document.getElementById("bill").value);
-    formData.append(
-      "tip[tip_percentage]",
-      document.getElementById("tip").value
+    return isValid;
+  };
+
+  const toggleButtonState = (text, disabled) => {
+    elements.calculateButton.value = text;
+    elements.calculateButton.disabled = disabled;
+  };
+
+  // Event Listeners
+  const handlePercentageButtonClick = (button) => {
+    elements.percentageButtons.forEach((btn) =>
+      btn.classList.remove("selected")
     );
-    formData.append(
-      "tip[number_of_people]",
-      document.getElementById("number_of_people").value
-    );
+    button.classList.add("selected");
+    elements.customTipInput.classList.remove("selected");
+    elements.tipInput.value = button.dataset.value;
+  };
 
-    fetch(form.action, {
-      method: form.method,
+  elements.percentageButtons.forEach((button) => {
+    button.addEventListener("click", () => handlePercentageButtonClick(button));
+  });
+
+  elements.customTipInput.addEventListener("input", () => {
+    elements.percentageButtons.forEach((btn) =>
+      btn.classList.remove("selected")
+    );
+    elements.customTipInput.classList.add("selected");
+    elements.tipInput.value = elements.customTipInput.value;
+  });
+
+  const handleFormSubmission = (event) => {
+    event.preventDefault();
+    clearErrors();
+
+    if (!validateFields()) return;
+
+    toggleButtonState("Calculating...", true);
+
+    const formData = new URLSearchParams({
+      "tip[bill]": elements.bill.value,
+      "tip[tip_percentage]": elements.tipPercentage.value,
+      "tip[number_of_people]": elements.numberOfPeople.value,
+    });
+
+    fetch(elements.form.action, {
+      method: elements.form.method,
       body: formData,
       headers: {
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
@@ -89,50 +108,47 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     })
       .then((response) => {
-        if (!response.ok) {
-          console.log(response.json());
-          throw new Error(`Server error: ${response.statusText}`);
-        }
+        if (!response.ok)
+          return response.json().then((data) => Promise.reject(data));
         return response.json();
       })
       .then((data) => {
-        // Update UI with results
-        tipAmountField.textContent = data.per_person_tip;
-        totalField.textContent = data.per_person;
-        calculateButton.value = "RESET"; // Change button text to "Reset"
-        calculateButton.disabled = false;
+        elements.tipAmountField.textContent = data.per_person_tip;
+        elements.totalField.textContent = data.per_person;
 
-        calculateButton.removeEventListener("click", handleCalculateClick); // Remove the calculate click listener
-        calculateButton.addEventListener("click", handleResetClick); // Add the reset click listener
+        toggleButtonState("RESET", false);
+        elements.calculateButton.removeEventListener(
+          "click",
+          handleCalculateClick
+        );
+        elements.calculateButton.addEventListener("click", handleResetClick);
       })
       .catch((error) => {
         console.error("Error:", error);
-        alert("Something went wrong! " + error.message);
-
-        calculateButton.textContent = "RESET";
-        calculateButton.disabled = false;
-        calculateButton.removeEventListener("click", handleCalculateClick);
-        calculateButton.addEventListener("click", handleResetClick);
+        alert("Something went wrong! Please try again.");
+        toggleButtonState("RESET", false);
+        elements.calculateButton.removeEventListener(
+          "click",
+          handleCalculateClick
+        );
+        elements.calculateButton.addEventListener("click", handleResetClick);
       });
-  }
+  };
 
-  // Handle Reset Click
-  function handleResetClick(event) {
+  const handleResetClick = (event) => {
     event.preventDefault();
-    form.reset(); // Reset form fields
-    tipAmountField.textContent = "0.00"; // Reset tip amount field
-    totalField.textContent = "0.00"; // Reset total amount field
-    percentageButtons.forEach((btn) => btn.classList.remove("selected"));
-    calculateButton.value = "CALCULATE"; // Change button text back to "Calculate"
-    calculateButton.removeEventListener("click", handleResetClick); // Remove the reset click listener
-    calculateButton.addEventListener("click", handleCalculateClick); // Add the calculate click listener again
-  }
+    elements.form.reset();
+    elements.tipAmountField.textContent = "0.00";
+    elements.totalField.textContent = "0.00";
+    elements.percentageButtons.forEach((btn) =>
+      btn.classList.remove("selected")
+    );
+    toggleButtonState("CALCULATE", false);
+    elements.calculateButton.removeEventListener("click", handleResetClick);
+    elements.calculateButton.addEventListener("click", handleCalculateClick);
+  };
 
-  // Initially, bind the calculate click handler
-  calculateButton.addEventListener("click", handleCalculateClick);
+  const handleCalculateClick = (event) => handleFormSubmission(event);
 
-  function handleCalculateClick(event) {
-    event.preventDefault();
-    handleFormSubmission(event); // Call the Ajax form submission function
-  }
+  elements.calculateButton.addEventListener("click", handleCalculateClick);
 });

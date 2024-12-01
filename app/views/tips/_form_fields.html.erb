@@ -1,0 +1,32 @@
+<div>
+    <div class="item-label">
+        <%= form.label :bill, "Bill ($)" %>
+        <%= error_message_for(tip, :bill, id: "bill-error") %>
+    </div>
+    <div class="input-container">
+        <%= image_tag 'icon-dollar.svg', class: 'input-icon' %>
+        <%= form.number_field :bill, step: 0.01, id: "bill", required: true, class: "custom-input" %>
+    </div>
+</div>
+
+<div>
+    <div class="item-label">
+        <label>Select Tip %</label>
+        <%= error_message_for(tip, :tip, id: "tip-error") %>
+    </div>
+    <div class="tip-btn-container">
+        <%= tip_buttons(tip_percentages) %>
+        <%= tag.input type: "number", class: "tip-btn custom-tip-input", placeholder: "Custom", id: "custom-tip", min: 0, step: 0.01 %>
+    </div>
+</div>
+
+<div>
+    <div class="item-label">
+        <%= form.label :number_of_people, "Number of People" %>
+        <%= error_message_for(tip, :number_of_people, id: "people-error") %>
+    </div>
+    <div class="input-container">
+        <%= image_tag 'icon-person.svg', class: 'input-icon' %>
+        <%= form.number_field :number_of_people, id: "number_of_people", required: true, class: "custom-input" %>
+    </div>
+</div>

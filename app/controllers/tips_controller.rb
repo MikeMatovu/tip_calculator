@@ -1,6 +1,7 @@
 class TipsController < ApplicationController
   def index
     @tip = Tip.new
+    @tip_percentages = [5, 10, 15, 25, 50]
   end
   
   def create

@@ -1,0 +1,23 @@
+<div class="left">
+    <div class="info-div">
+        <div class="info-text">
+            <label>Tip Amount</label>
+            <span class="person-text">/ Person</span>
+        </div>
+        <div class="total-container">
+            <span class="dollar-sign">$</span>
+            <span id="tip-amount" class="main-numbers">0.00</span>
+        </div>
+    </div>
+    <div class="info-div">
+        <div class="info-text">
+            <label>Total</label>
+            <span class="person-text">/ Person</span>
+        </div>
+        <div class="total-container">
+            <span class="dollar-sign">$</span>
+            <span id="total" class="main-numbers">0.00</span>
+        </div>
+    </div>
+    <%= form.submit "CALCULATE", id: "calculate-button", class: "calculate-button" %>
+</div>
