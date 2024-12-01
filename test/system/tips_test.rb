@@ -2,48 +2,64 @@ require "application_system_test_case"
 
 class TipsTest < ApplicationSystemTestCase
   setup do
-    @tip = tips(:one)
+    @valid_bill = 100
+    @valid_tip_percentage = 10
+    @valid_number_of_people = 2
   end
 
-  test "visiting the index" do
-    visit tips_url
-    assert_selector "h1", text: "Tips"
+  test "submitting the form with valid inputs" do
+    visit root_path
+
+    fill_in "Bill ($)", with: @valid_bill
+    fill_in "tip_tip_percentage", with: @valid_tip_percentage
+    fill_in "Number of People", with: @valid_number_of_people
+
+    click_on "CALCULATE"
+
+    assert_text "Tip Amount"
+    assert_text "Total"
+    assert_text "Per Person"
   end
 
-  test "should create tip" do
-    visit tips_url
-    click_on "New tip"
+  test "submitting the form with empty fields" do
+    visit root_path
 
-    fill_in "Bill", with: @tip.bill
-    fill_in "Number of people", with: @tip.number_of_people
-    fill_in "Tip amount", with: @tip.tip_amount
-    fill_in "Tip percentage", with: @tip.tip_percentage
-    fill_in "Total", with: @tip.total
-    click_on "Create Tip"
+    fill_in "Bill ($)", with: ""
+    fill_in "tip_tip_percentage", with: ""
+    fill_in "Number of People", with: ""
 
-    assert_text "Tip was successfully created"
-    click_on "Back"
+    click_on "CALCULATE"
+
+    assert_text "Bill can't be blank"
+    assert_text "Tip percentage can't be blank"
+    assert_text "Number of people can't be blank"
   end
 
-  test "should update Tip" do
-    visit tip_url(@tip)
-    click_on "Edit this tip", match: :first
+  test "submitting the form with negative values" do
+    visit root_path
 
-    fill_in "Bill", with: @tip.bill
-    fill_in "Number of people", with: @tip.number_of_people
-    fill_in "Tip amount", with: @tip.tip_amount
-    fill_in "Tip percentage", with: @tip.tip_percentage
-    fill_in "Total", with: @tip.total
-    click_on "Update Tip"
+    fill_in "Bill ($)", with: -100
+    fill_in "tip_tip_percentage", with: -10
+    fill_in "Number of People", with: -2
 
-    assert_text "Tip was successfully updated"
-    click_on "Back"
+    click_on "CALCULATE"
+
+    assert_text "Bill must be greater than 0"
+    assert_text "Tip percentage must be greater than or equal to 0"
+    assert_text "Number of people must be greater than 0"
   end
 
-  test "should destroy Tip" do
-    visit tip_url(@tip)
-    click_on "Destroy this tip", match: :first
+  test "submitting the form with zero values" do
+    visit root_path
 
-    assert_text "Tip was successfully destroyed"
+    fill_in "Bill ($)", with: 0
+    fill_in "tip_tip_percentage", with: 0
+    fill_in "Number of People", with: 0
+
+    click_on "CALCULATE"
+
+    assert_text "Bill must be greater than 0"
+    assert_text "Tip percentage must be greater than or equal to 0"
+    assert_text "Number of people must be greater than 0"
   end
 end
