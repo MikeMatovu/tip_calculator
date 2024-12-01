@@ -25,7 +25,6 @@ class TipsTest < ApplicationSystemTestCase
 
     # Log message after waiting
     puts "Asynchronous request completed."
-
   end
 
   test "submitting the form with empty fields" do
