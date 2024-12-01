@@ -17,5 +17,3 @@ class TipTest < ActiveSupport::TestCase
     assert tip.save, "Could not save a valid tip"
   end
 end
-
-

@@ -7,7 +7,7 @@ class TipsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create tip" do
-    assert_difference('Tip.count') do
+    assert_difference("Tip.count") do
       post tips_url, params: { tip: { bill: 100, tip_percentage: 10, number_of_people: 2 } }
     end
     assert_response :success
