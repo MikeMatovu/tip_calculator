@@ -14,6 +14,8 @@ class TipsTest < ApplicationSystemTestCase
     fill_in "custom-tip", with: @valid_tip_percentage
     fill_in "number_of_people", with: @valid_number_of_people
 
+    click_on "CALCULATE"
+
     assert_selector "#calculate-button[value='Calculating...']", wait: 5
   end
 
