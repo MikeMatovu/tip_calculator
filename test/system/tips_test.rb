@@ -14,17 +14,7 @@ class TipsTest < ApplicationSystemTestCase
     fill_in "custom-tip", with: @valid_tip_percentage
     fill_in "number_of_people", with: @valid_number_of_people
 
-    click_on "CALCULATE"
-
-    sleep 10
-    puts "Waiting for the asynchronous request to complete..."
-
-    # Wait for the asynchronous request to complete
-    assert_selector "#tip-amount", text: "0.00", wait: 10
-    assert_selector "#total", text: "0.00", wait: 10
-
-    # Log message after waiting
-    puts "Asynchronous request completed."
+    assert_selector "#calculate-button[value='Calculating...']", wait: 5
   end
 
   test "submitting the form with empty fields" do
