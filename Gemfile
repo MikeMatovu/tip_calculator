@@ -8,7 +8,7 @@ gem "propshaft"
 # gem "sqlite3", ">= 2.1"
 
 # # Use postgress as the database for Active Record
-gem "pg" 
+gem "pg"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -44,7 +44,6 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
-
   # Use sqlite3 as the database for Active Record in test and development
   gem "sqlite3", ">= 2.1"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
