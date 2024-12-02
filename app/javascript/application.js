@@ -1,7 +1,7 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbo:load", () => {
   const elements = {
     percentageButtons: document.querySelectorAll(".tip-btn"),
     customTipInput: document.getElementById("custom-tip"),
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setError("tip", "! Can't be zero");
       isValid = false;
     }
-    if (!peopleValue || peopleValue<= 0) {
+    if (!peopleValue || peopleValue <= 0) {
       setError("numberOfPeople", "! Can't be zero");
       isValid = false;
     }
