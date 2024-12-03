@@ -1,5 +1,5 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
-// import "@hotwired/turbo-rails";
+import "@hotwired/turbo-rails";
 
 document.addEventListener("turbo:load", () => {
   const elements = {
@@ -15,7 +15,7 @@ document.addEventListener("turbo:load", () => {
     numberOfPeople: document.getElementById("number_of_people"),
     errors: {
       bill: document.getElementById("bill-error"),
-      tip: document.getElementById("tip-error"),
+      tipInput: document.getElementById("tip-error"),
       numberOfPeople: document.getElementById("people-error"),
     },
   };
@@ -47,7 +47,7 @@ document.addEventListener("turbo:load", () => {
       isValid = false;
     }
     if (!tipValue || tipValue <= 0) {
-      setError("tip", "! Can't be zero");
+      setError("tipInput", "! Can't be zero");
       isValid = false;
     }
     if (!peopleValue || peopleValue <= 0) {
