@@ -54,6 +54,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Use dotenv to load environment variables from .env into ENV in development and test
+
+  gem "dotenv-rails"
 end
 
 group :development do

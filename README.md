@@ -1,93 +1,156 @@
-# README
+# Tip Calculator
 
-This README documents the necessary steps to get the application up and running.
+A tip calculator built with Ruby on Rails. This application allows users to input a bill amount, select a tip percentage, specify the number of people splitting the bill, and instantly view the calculated results.
 
-## Ruby Version
+---
 
-- Ruby 3.0.0
+## Table of Contents
 
-## System Dependencies
+1. [Technical Overview](#technical-overview)
+2. [Features](#features)
+3. [Getting Started](#getting-started)
+4. [System Dependencies](#system-dependencies)
+5. [Setup Instructions](#setup-instructions)
+6. [Database Setup](#database-setup)
+7. [Running the Tests](#running-the-tests)
+8. [Screenshots](#screenshots)
+9. [Live Demo](#live-demo)
+10. [Contributing](#contributing)
+11. [License](#license)
 
-- Rails 6.1.4
-- SQLite3 (for development and test environments)
-- Node.js and Yarn (for managing JavaScript dependencies)
+---
 
-## Configuration
-
-1. Clone the repository:
-
-   ```sh
-   git clone https://github.com/your-username/tip_calculator.git
-   cd tip_calculator
-   ```
-
-2. Install the required gems:
-
-   ```sh
-   bundle install
-   ```
-
-3. Install JavaScript dependencies:
-   ```sh
-   yarn install
-   ```
-
-## Database Creation
-
-1. Create the database:
-   ```sh
-   rails db:create
-   ```
-
-## Database Initialization
-
-1. Run the database migrations:
-
-   ```sh
-   rails db:migrate
-   ```
-
-2. Seed the database (if applicable):
-   ```sh
-   rails db:seed
-   ```
-
-## How to Run the Test Suite
-
-1. Ensure the test database is up-to-date:
-
-   ```sh
-   rails db:test:prepare
-   ```
-
-2. Run the tests:
-   ```sh
-   rails test
-   ```
-
-## Approach to Solving the Challenge
+## Technical Overview
 
 ### Problem Statement
 
-The challenge was to create a tip calculator application that allows users to input a bill amount, select a tip percentage, and specify the number of people to split the bill. The application should calculate the tip amount, total bill, and the amount per person.
+Develop a comprehensive tip calculator application that allows users to split the bill among multiple users based on a custom or preset tip percentage. The application should include an admin dashboard for managing tips and provide seamless deployment to a cloud platform.
 
-### Solution
+### Solution Highlights
 
-1. **Model**: Created a `Tip` model with validations to ensure the presence and numericality of the `bill`, `tip_percentage`, and `number_of_people` attributes.
+- **Model**: A `Tip` model validates input fields (bill, tip_percentage, number_of_people) to ensure accurate calculations.
+- **Controller**: The `TipsController` manages form submissions, processes the data, and returns JSON responses.
+- **Views**: Clean, responsive UI built with ERB templates and CSS for styling.
+- **JavaScript**: Handles asynchronous form submission, client side error validation, and dynamic UI updates.
+- **Testing**: Comprehensive model and controller tests ensure robust functionality and reliable edge-case handling.
+- **Admin Dashboard**: An admin only dashboard for viewing previous tips and their details.
+- **Deployment**: Seamless deployment to a cloud platform ( Render) with environment-specific configurations for databases and other services. Live version can be assesed [here](https://tip-calculator-9dey.onrender.com/). Admin username **admin**: Admin password **admin123** 
 
-2. **Controller**: Implemented the `TipsController` with `index` and `create` actions. The `index` action initializes a new `Tip` object, and the `create` action handles the form submission, calculates the tip, and returns the results as JSON.
+---
 
-3. **View**: Designed the `index.html.erb` view to include a form for inputting the bill amount, selecting a tip percentage, and specifying the number of people. The form uses `form_with` to submit the data via AJAX.
+## Features
 
-4. **JavaScript**: Added JavaScript to handle form submission, validate input fields, and display error messages. The JavaScript also updates the UI with the calculated results.
+- Input validation for bill amount, tip percentage, and number of people.
+- Dynamic UI updates showing real-time calculations.
+- Custom tip percentage input option.
+- Responsive design for desktop and mobile users.
+- Admin dashboard for viewing previous tips
 
-5. **Testing**: Added tests for the `Tip` model and `TipsController` to ensure the application works correctly and handles edge cases.
+---
 
-### Key Features
+## Getting Started
 
-- Input validation to ensure valid data is submitted.
-- Dynamic calculation of tip amount, total bill, and amount per person.
-- Responsive design to provide a good user experience on different devices.
-- Test suite to ensure the application works correctly and is maintainable.
+Follow these instructions to set up the project on your local machine.
 
-By following these steps, the application provides a reliable and user-friendly tip calculator that meets the requirements of the challenge.
+---
+
+## System Dependencies
+
+- **Ruby**: >= 3.3.0
+- **Rails**: >= 8.0.0
+- **SQLite3**: For development and testing.
+- **PostgreSQL**: (Optional) For production environments.
+- **Node.js and Yarn**: For managing JavaScript dependencies.
+
+---
+
+## Setup instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/MikeMatovu/tip_calculator.git
+cd tip_calculator
+```
+
+### 2. Install ruby gems
+
+```bash
+bundle install
+```
+
+### 3. Install javascript
+
+```bash
+yarn install
+```
+
+### 4. Set Up Environment Variables
+
+Copy the `.env.example` file to `.env` and update the values with your own credentials:
+
+```bash
+cp .env.example .env
+```
+### 5. Create and Migrate the database
+
+```bash
+rails db:create
+rails db:migrate
+```
+
+### 6. Start the rails server
+
+```bash
+ruby bin/rails server
+```
+
+
+## Running the tests
+
+### 1. Prepare the database
+
+```bash
+rails db:test:prepare
+```
+### 2. Run the test suite
+```bash
+rails test
+```
+
+---
+
+## Screenshots
+
+![Screenshot of Main Page](public/images/main_page.png)  
+*Main page showing the bill input, tip options, and results.*
+
+![Screenshot of the dashboard](public/images/dashboard_page.png)  
+*Tip calculation section displaying calculated tip and total amount per person.*
+
+---
+
+## Live Demo
+
+Access the deployed application here: [Tip calculator](https://tip-calculator-9dey.onrender.com/). Admin username **admin**: Admin password **admin123** 
+
+---
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature-name`.
+3. Commit your changes: `git commit -m "Add feature-name"`.
+4. Push to the branch: `git push origin feature-name`.
+5. Open a Pull Request.
+
+---
+
+## License
+
+This project is licensed under the Free License. You are free to use, modify, and distribute the code as you wish
+
+
+
