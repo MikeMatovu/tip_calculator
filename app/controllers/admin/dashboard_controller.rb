@@ -6,10 +6,10 @@ class Admin::DashboardController < ApplicationController
 
   private
   def authenticate
-      authenticate_or_request_with_http_basic do |username, password|
-        Rails.logger.info "Admin username: #{ENV['ADMIN_USERNAME']}"
-        Rails.logger.info "Admin password: #{ENV['ADMIN_PASSWORD']}"
-        username == ENV["ADMIN_USERNAME"] && password == ENV["ADMIN_PASSWORD"]
-      end
+    admin_username = ENV["ADMIN_USERNAME"] || "admin"
+    admin_password = ENV["ADMIN_PASSWORD"] || "admin123"
+    authenticate_or_request_with_http_basic do |username, password|
+      username == admin_username && password == admin_password
     end
+  end
 end
