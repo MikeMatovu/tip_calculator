@@ -58,6 +58,9 @@ group :development, :test do
   # Use dotenv to load environment variables from .env into ENV in development and test
 
   gem "dotenv-rails"
+
+  # use blazer for data visualization
+  gem "blazer"
 end
 
 group :development do

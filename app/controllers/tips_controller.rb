@@ -19,6 +19,18 @@ class TipsController < ApplicationController
     end
   end
 
+  def show
+    @tip = Tip.find(params[:id])
+    render json: {
+      tip_amount: @tip.tip_amount,
+      total_amount: @tip.total,
+      per_person: @tip.per_person_amount,
+      per_person_tip: @tip.per_person_tip
+    }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Tip not found" }, status: :not_found
+  end
+
   private
 
   def tip_params
