@@ -1,4 +1,5 @@
 class TipsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @tip = Tip.new
     @tip_percentages = [ 5, 10, 15, 25, 50 ]

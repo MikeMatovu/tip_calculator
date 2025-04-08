@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  mount Blazer::Engine, at: "blazer"
+  authenticate :user do
+    mount Blazer::Engine, at: "blazer"
+  end
+
+  devise_for :users
   root "tips#index"
   resources :tips
 

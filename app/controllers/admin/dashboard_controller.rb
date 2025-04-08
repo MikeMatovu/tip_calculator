@@ -1,5 +1,5 @@
 class Admin::DashboardController < ApplicationController
-  before_action :authenticate
+  before_action :authenticate_user!
   def index
      @tips = Tip.order(created_at: :desc)
   end
