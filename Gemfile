@@ -61,6 +61,8 @@ group :development, :test do
 
   # use blazer for data visualization
   gem "blazer"
+
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -75,3 +77,5 @@ group :test do
 end
 
 gem "devise", "~> 4.9"
+
+gem "rspec-rails", "~> 7.1"

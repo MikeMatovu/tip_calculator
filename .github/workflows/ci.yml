@@ -1,9 +1,12 @@
 name: CI
 
 on:
-  pull_request:
   push:
-    branches: [ main ]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   scan_ruby:
@@ -23,7 +26,7 @@ jobs:
         run: |
           gem install bundler
           bundle install
-          
+
       - name: Set executable permissions
         run: chmod +x bin/*
 
@@ -69,35 +72,24 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    env:
-      ADMIN_USERNAME: admin
-      ADMIN_PASSWORD: admin123
 
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
-
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version
+          ruby-version: 3.2 # Adjust to your Ruby version
           bundler-cache: true
 
-      - name: Set executable permissions
-        run: chmod +x bin/*
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Set up database
+        run: |
+          bin/rails db:create RAILS_ENV=test
+          bin/rails db:migrate RAILS_ENV=test
 
       - name: Run tests
-        env:
-          RAILS_ENV: test
-        run: bin/rails db:test:prepare test test:system
-
-      - name: Keep screenshots from failed system tests
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
-          if-no-files-found: ignore
+        run: bundle exec rspec
